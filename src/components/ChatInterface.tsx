@@ -87,47 +87,59 @@ const ChatInterface = () => {
           const side = type.includes('front') ? 'front' : 'back';
           setIdUploaded(prev => ({ ...prev, [side]: true }));
           
+          // Only show next message if it hasn't been shown yet
           if (side === 'front' && !idUploaded.back) {
-            addMessage({
-              type: "agent",
-              content: "Thank you for uploading the front of your ID. Please upload the back of your ID.",
-            });
+            setTimeout(() => {
+              addMessage({
+                type: "agent",
+                content: "Please upload the back of your ID.",
+              });
+            }, 500);
           } else if (side === 'back' && !idUploaded.front) {
-            addMessage({
-              type: "agent",
-              content: "Thank you for uploading the back of your ID. Please upload the front of your ID.",
-            });
+            setTimeout(() => {
+              addMessage({
+                type: "agent",
+                content: "Please upload the front of your ID.",
+              });
+            }, 500);
           }
           
-          if ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front)) {
-            setShowPersonalDetails(true);
-            addMessage({
-              type: "agent",
-              content: "We've extracted the following information from your ID. Please verify if it's correct:",
-            });
+          // Show personal details only when both sides are uploaded
+          if (!showPersonalDetails && ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front))) {
+            setTimeout(() => {
+              setShowPersonalDetails(true);
+              addMessage({
+                type: "agent",
+                content: "We've extracted the following information from your ID. Please verify if it's correct:",
+              });
+            }, 500);
           }
         } else if (type === 'Tax Return') {
           setTaxReturnUploaded(true);
-          setShowBusinessDetails(true);
-          addMessage({
-            type: "agent",
-            content: "We've extracted the following information from your tax return. Please verify if it's correct:",
-          });
+          setTimeout(() => {
+            setShowBusinessDetails(true);
+            addMessage({
+              type: "agent",
+              content: "We've extracted the following information from your tax return. Please verify if it's correct:",
+            });
+          }, 500);
         } else {
           // Handle additional documents
-          setAdditionalDocs(prev => ({ ...prev, [type.toLowerCase().replace(/\s+/g, '')]: true }));
-          
-          // Check if all documents are uploaded
           const updatedDocs = {
             ...additionalDocs,
             [type.toLowerCase().replace(/\s+/g, '')]: true
           };
+          setAdditionalDocs(updatedDocs);
           
-          if (Object.values(updatedDocs).every(val => val)) {
-            addMessage({
-              type: "agent",
-              content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
-            });
+          // Check if all documents are uploaded
+          if (Object.values(updatedDocs).every(val => val) && 
+              !Object.values(additionalDocs).every(val => val)) { // Only show message if it hasn't been shown before
+            setTimeout(() => {
+              addMessage({
+                type: "agent",
+                content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
+              });
+            }, 500);
           }
         }
       }
