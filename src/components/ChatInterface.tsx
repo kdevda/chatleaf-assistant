@@ -1,13 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import DocumentUpload from "./DocumentUpload";
 
 interface Message {
@@ -22,7 +15,14 @@ interface PersonalDetails {
   address: string;
 }
 
+interface BusinessDetails {
+  businessName: string;
+  taxYear: string;
+  income: string;
+}
+
 const ChatInterface = () => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState(0);
   const [loanAmount, setLoanAmount] = useState("");
@@ -35,7 +35,13 @@ const ChatInterface = () => {
     dob: "01/01/1990",
     address: "123 Main St, City, State 12345"
   });
+  const [businessDetails, setBusinessDetails] = useState<BusinessDetails>({
+    businessName: "Sample Business LLC",
+    taxYear: "2023",
+    income: "$500,000"
+  });
   const [showPersonalDetails, setShowPersonalDetails] = useState(false);
+  const [showBusinessDetails, setShowBusinessDetails] = useState(false);
   const [taxReturnUploaded, setTaxReturnUploaded] = useState(false);
   const [additionalDocs, setAdditionalDocs] = useState({
     bankStatements: false,
@@ -43,12 +49,19 @@ const ChatInterface = () => {
     financialProjections: false,
   });
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const addMessage = (message: Message) => {
     setMessages((prev) => [...prev, message]);
   };
 
   useEffect(() => {
-    // Initial greeting
     setTimeout(() => {
       addMessage({
         type: "agent",
@@ -56,6 +69,22 @@ const ChatInterface = () => {
       });
     }, 500);
   }, []);
+
+  const handleFileUpload = (type: string) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        addMessage({
+          type: "user",
+          content: `Uploaded ${type}: ${file.name}`,
+        });
+      }
+    };
+    input.click();
+  };
 
   const handleLoanAmountSubmit = () => {
     addMessage({ type: "user", content: `Loan amount: $${loanAmount}` });
@@ -103,11 +132,8 @@ const ChatInterface = () => {
   };
 
   const handleIdUpload = (side: "front" | "back") => {
+    handleFileUpload(`ID ${side}`);
     setIdUploaded((prev) => ({ ...prev, [side]: true }));
-    addMessage({
-      type: "user",
-      content: `Uploaded ${side} of ID`,
-    });
     
     if (side === "front" && !idUploaded.back) {
       addMessage({
@@ -142,6 +168,42 @@ const ChatInterface = () => {
       });
       setShowPersonalDetails(false);
       setStep(4);
+    }
+  };
+
+  const handleTaxReturnUpload = () => {
+    handleFileUpload('Tax Return');
+    setTaxReturnUploaded(true);
+    setShowBusinessDetails(true);
+    addMessage({
+      type: "agent",
+      content: "We've extracted the following information from your tax return. Please verify if it's correct:",
+    });
+  };
+
+  const handleBusinessDetailsVerification = (verified: boolean) => {
+    if (verified) {
+      setShowBusinessDetails(false);
+      setStep(5);
+      addMessage({
+        type: "agent",
+        content: "Congratulations! You're pre-qualified. We just need a few more documents to evaluate your application:",
+      });
+    }
+  };
+
+  const handleAdditionalDocUpload = (docType: keyof typeof additionalDocs) => {
+    handleFileUpload(docType);
+    setAdditionalDocs((prev) => ({ ...prev, [docType]: true }));
+    checkAllDocsUploaded();
+  };
+
+  const checkAllDocsUploaded = () => {
+    if (Object.values(additionalDocs).every((val) => val)) {
+      addMessage({
+        type: "agent",
+        content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
+      });
     }
   };
 
@@ -226,43 +288,43 @@ const ChatInterface = () => {
         return (
           <div className="space-y-4">
             <DocumentUpload
-              onUpload={() => {
-                setTaxReturnUploaded(true);
-                setStep(5);
-                addMessage({
-                  type: "agent",
-                  content: "Congratulations! You're pre-qualified. We just need a few more documents to evaluate your application:",
-                });
-              }}
+              onUpload={handleTaxReturnUpload}
               label="Upload Tax Return"
               uploaded={taxReturnUploaded}
             />
+            {showBusinessDetails && (
+              <div className="mt-4 p-4 border rounded-lg space-y-2">
+                <h3 className="font-semibold">Business Details</h3>
+                <p>Business Name: {businessDetails.businessName}</p>
+                <p>Tax Year: {businessDetails.taxYear}</p>
+                <p>Income Information: {businessDetails.income}</p>
+                <div className="flex gap-2 mt-4">
+                  <Button onClick={() => handleBusinessDetailsVerification(true)}>
+                    Looks Good
+                  </Button>
+                  <Button variant="outline" onClick={() => setShowBusinessDetails(false)}>
+                    Modify
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         );
       case 5:
         return (
           <div className="space-y-4">
             <DocumentUpload
-              onUpload={() => {
-                setAdditionalDocs((prev) => ({ ...prev, bankStatements: true }));
-                checkAllDocsUploaded();
-              }}
+              onUpload={() => handleAdditionalDocUpload('bankStatements')}
               label="Bank Statements"
               uploaded={additionalDocs.bankStatements}
             />
             <DocumentUpload
-              onUpload={() => {
-                setAdditionalDocs((prev) => ({ ...prev, businessPlan: true }));
-                checkAllDocsUploaded();
-              }}
+              onUpload={() => handleAdditionalDocUpload('businessPlan')}
               label="Business Plan"
               uploaded={additionalDocs.businessPlan}
             />
             <DocumentUpload
-              onUpload={() => {
-                setAdditionalDocs((prev) => ({ ...prev, financialProjections: true }));
-                checkAllDocsUploaded();
-              }}
+              onUpload={() => handleAdditionalDocUpload('financialProjections')}
               label="Financial Projections"
               uploaded={additionalDocs.financialProjections}
             />
@@ -270,15 +332,6 @@ const ChatInterface = () => {
         );
       default:
         return null;
-    }
-  };
-
-  const checkAllDocsUploaded = () => {
-    if (Object.values(additionalDocs).every((val) => val)) {
-      addMessage({
-        type: "agent",
-        content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
-      });
     }
   };
 
@@ -303,6 +356,7 @@ const ChatInterface = () => {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className="p-4 border-t">{renderCurrentStep()}</div>
     </div>
