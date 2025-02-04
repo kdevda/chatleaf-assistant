@@ -81,6 +81,55 @@ const ChatInterface = () => {
           type: "user",
           content: `Uploaded ${type}: ${file.name}`,
         });
+
+        // Update the appropriate state based on the document type
+        if (type.includes('ID')) {
+          const side = type.includes('front') ? 'front' : 'back';
+          setIdUploaded(prev => ({ ...prev, [side]: true }));
+          
+          if (side === 'front' && !idUploaded.back) {
+            addMessage({
+              type: "agent",
+              content: "Thank you for uploading the front of your ID. Please upload the back of your ID.",
+            });
+          } else if (side === 'back' && !idUploaded.front) {
+            addMessage({
+              type: "agent",
+              content: "Thank you for uploading the back of your ID. Please upload the front of your ID.",
+            });
+          }
+          
+          if ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front)) {
+            setShowPersonalDetails(true);
+            addMessage({
+              type: "agent",
+              content: "We've extracted the following information from your ID. Please verify if it's correct:",
+            });
+          }
+        } else if (type === 'Tax Return') {
+          setTaxReturnUploaded(true);
+          setShowBusinessDetails(true);
+          addMessage({
+            type: "agent",
+            content: "We've extracted the following information from your tax return. Please verify if it's correct:",
+          });
+        } else {
+          // Handle additional documents
+          setAdditionalDocs(prev => ({ ...prev, [type.toLowerCase().replace(/\s+/g, '')]: true }));
+          
+          // Check if all documents are uploaded
+          const updatedDocs = {
+            ...additionalDocs,
+            [type.toLowerCase().replace(/\s+/g, '')]: true
+          };
+          
+          if (Object.values(updatedDocs).every(val => val)) {
+            addMessage({
+              type: "agent",
+              content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
+            });
+          }
+        }
       }
     };
     input.click();
@@ -133,7 +182,6 @@ const ChatInterface = () => {
 
   const handleIdUpload = (side: "front" | "back") => {
     handleFileUpload(`ID ${side}`);
-    setIdUploaded((prev) => ({ ...prev, [side]: true }));
     
     if (side === "front" && !idUploaded.back) {
       addMessage({
