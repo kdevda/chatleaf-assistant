@@ -261,7 +261,9 @@ const ChatInterface = () => {
   };
 
   const renderCurrentStep = () => {
-    if (Object.values(additionalDocs).every(val => val)) {
+    const allDocsUploaded = Object.values(additionalDocs).every(val => val) && step === 5;
+    
+    if (allDocsUploaded) {
       return (
         <div className="flex gap-2">
           <Input
@@ -397,7 +399,16 @@ const ChatInterface = () => {
           </div>
         );
       default:
-        return null;
+        return (
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              placeholder="Type your message..."
+              className="flex-1"
+            />
+            <Button>Send</Button>
+          </div>
+        );
     }
   };
 
