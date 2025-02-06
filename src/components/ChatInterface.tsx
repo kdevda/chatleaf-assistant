@@ -199,29 +199,6 @@ const ChatInterface = () => {
     }
   };
 
-  const handleIdUpload = (side: "front" | "back") => {
-    handleFileUpload(`ID ${side}`);
-    
-    if (side === "front" && !idUploaded.back) {
-      addMessage({
-        type: "agent",
-        content: "Thank you for uploading the front of your ID. Please upload the back of your ID.",
-      });
-    } else if (side === "back" && !idUploaded.front) {
-      addMessage({
-        type: "agent",
-        content: "Thank you for uploading the back of your ID. Please upload the front of your ID.",
-      });
-    }
-    
-    if (idUploaded.front && side === "back" || idUploaded.back && side === "front") {
-      setShowPersonalDetails(true);
-      addMessage({
-        type: "agent",
-        content: "We've extracted the following information from your ID. Please verify if it's correct:",
-      });
-    }
-  };
 
   const handlePersonalDetailsVerification = (verified: boolean) => {
     if (verified) {
