@@ -30,10 +30,10 @@ const ChatInterface = () => {
   const [loanPurposes, setLoanPurposes] = useState<string[]>([]);
   const [idUploaded, setIdUploaded] = useState({ front: false, back: false });
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
-    fullName: "John Doe",
-    idNumber: "123-45-6789",
-    dob: "01/01/1990",
-    address: "123 Main St, City, State 12345"
+    fullName: "Sample Connor",
+    idNumber: "S99988801",
+    dob: "01/12/1983",
+    address: "123 NORTH MAIN STREET, APT 1, North Quincy, MA 02171-1748"
   });
   const [businessDetails, setBusinessDetails] = useState<BusinessDetails>({
     businessName: "Sample Business LLC",
