@@ -386,9 +386,9 @@ const ChatInterface = () => {
         return (
           <div className="space-y-4">
             <DocumentUpload
-              onUpload={handleTaxReturnUpload}
+              onUpload=handleFileUpload("Tax Return")}
               label="Upload Tax Return"
-              uploaded={taxReturnUploaded}
+              uploaded={idUploaded.taxReturnUploaded}
             />
             {showBusinessDetails && (
               <div className="mt-4 p-4 border rounded-lg space-y-2">
