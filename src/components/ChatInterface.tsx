@@ -165,7 +165,10 @@ const ChatInterface = () => {
   };
 
   const handleLoanAmountSubmit = () => {
-    addMessage({ type: "user", content: `Loan amount: $${loanAmount}` });
+    if (!loanAmount.trim()) return;
+    
+    const amount = loanAmount.replace(/[^0-9]/g, '');
+    addMessage({ type: "user", content: `Loan amount: $${amount}` });
     addMessage({
       type: "agent",
       content: "Great! What types of loans are you interested in? You can select multiple options.",
@@ -298,11 +301,21 @@ const ChatInterface = () => {
         return (
           <div className="flex gap-2">
             <Input
-              type="number"
+              type="text"
               value={loanAmount}
-              onChange={(e) => setLoanAmount(e.target.value)}
-              placeholder="Enter amount"
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === '' || /^\$?\d*$/.test(value)) {
+                  setLoanAmount(value.replace('$', ''));
+                }
+              }}
+              placeholder="Enter amount (e.g. 50000)"
               className="flex-1"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleLoanAmountSubmit();
+                }
+              }}
             />
             <Button onClick={handleLoanAmountSubmit}>Submit</Button>
           </div>
