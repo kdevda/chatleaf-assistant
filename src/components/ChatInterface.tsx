@@ -300,12 +300,12 @@ const ChatInterface = () => {
         return (
           <div className="space-y-4">
             <DocumentUpload
-              onUpload={() => handleIdUpload("front")}
+              onUpload={() => handleFileUpload("ID front")}
               label="Upload ID Front"
               uploaded={idUploaded.front}
             />
             <DocumentUpload
-              onUpload={() => handleIdUpload("back")}
+              onUpload={() => handleFileUpload("ID back")}
               label="Upload ID Back"
               uploaded={idUploaded.back}
             />
