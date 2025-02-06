@@ -87,33 +87,41 @@ const ChatInterface = () => {
           const side = type.includes('front') ? 'front' : 'back';
           setIdUploaded(prev => ({ ...prev, [side]: true }));
           
-          // Only show next message if it hasn't been shown yet
-          if (side === 'front' && !idUploaded.back) {
-            setTimeout(() => {
-              addMessage({
-                type: "agent",
-                content: "Please upload the back of your ID.",
-              });
-            }, 500);
-          } else if (side === 'back' && !idUploaded.front) {
-            setTimeout(() => {
-              addMessage({
-                type: "agent",
-                content: "Please upload the front of your ID.",
-              });
-            }, 500);
-          }
-          
-          // Show personal details only when both sides are uploaded
-          if (!showPersonalDetails && ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front))) {
-            setTimeout(() => {
-              setShowPersonalDetails(true);
-              addMessage({
-                type: "agent",
-                content: "We've extracted the following information from your ID. Please verify if it's correct:",
-              });
-            }, 500);
-          }
+          // Show upload confirmation message first
+          setTimeout(() => {
+            addMessage({
+              type: "agent",
+              content: `Thank you for uploading the ${side} of your ID.`,
+            });
+            
+            // Then show next instruction if needed
+            if (side === 'front' && !idUploaded.back) {
+              setTimeout(() => {
+                addMessage({
+                  type: "agent",
+                  content: "Please upload the back of your ID.",
+                });
+              }, 500);
+            } else if (side === 'back' && !idUploaded.front) {
+              setTimeout(() => {
+                addMessage({
+                  type: "agent",
+                  content: "Please upload the front of your ID.",
+                });
+              }, 500);
+            }
+            
+            // Show personal details only when both sides are uploaded
+            if (!showPersonalDetails && ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front))) {
+              setTimeout(() => {
+                setShowPersonalDetails(true);
+                addMessage({
+                  type: "agent",
+                  content: "We've extracted the following information from your ID. Please verify if it's correct:",
+                });
+              }, 1000);
+            }
+          }, 500);
         } else if (type === 'Tax Return') {
           setTaxReturnUploaded(true);
           setTimeout(() => {
