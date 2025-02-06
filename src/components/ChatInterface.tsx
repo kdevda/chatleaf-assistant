@@ -434,7 +434,7 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(800px-64px)]">
+    <div className="flex flex-col h-[calc(100vh-64px)]">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
@@ -456,7 +456,7 @@ const ChatInterface = () => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="p-4 border-t">
+      <div className="p-4 border-t bg-white">
         {renderCurrentStep()}
         {step === 5 && !Object.values(additionalDocs).every(val => val) && (
           <div className="flex gap-2 mt-4">
