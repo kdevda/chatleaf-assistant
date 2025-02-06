@@ -121,22 +121,17 @@ const ChatInterface = () => {
               }
             }, 1000);
           }, 1000);
-        } else if (type === 'Tax Return') {
-          const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
-        // First, add the uploaded file message
+     } else if (type === 'Tax Return') {
+    setTaxReturnUploaded(true);
+
+    // Delay the extracted information message
+    setTimeout(() => {
+        setShowBusinessDetails(true);
         addMessage({
-          type: "user",
-          content: `Uploaded ${type}: ${file.name}`,
+            type: "agent",
+            content: "We've extracted the following information from your tax return. Please verify if it's correct:",
         });
-          setTaxReturnUploaded(true);
-          setTimeout(() => {
-            setShowBusinessDetails(true);
-            addMessage({
-              type: "agent",
-              content: "We've extracted the following information from your tax return. Please verify if it's correct:",
-            });
-          }, 500);
+    }, 1000); // Add delay similar to ID upload
         } else {
           // Handle additional documents
           const updatedDocs = {
