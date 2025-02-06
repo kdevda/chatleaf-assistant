@@ -384,12 +384,21 @@ const ChatInterface = () => {
           </div>
         );
       default:
-        return null;
+        return (
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              placeholder="Type your message..."
+              className="flex-1"
+            />
+            <Button>Send</Button>
+          </div>
+        );
     }
   };
 
   return (
-    <div className="flex flex-col h-[calc(800px-64px)]"> {/* Increased height from 600px to 800px */}
+    <div className="flex flex-col h-[calc(800px-64px)]">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
