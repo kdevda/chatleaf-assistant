@@ -9,7 +9,7 @@ const ChatBubble = () => {
     <div className="fixed bottom-4 right-4 z-50">
       {isOpen ? (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-[400px] h-[600px] animate-fade-in">
+          <div className="bg-white rounded-lg shadow-xl w-[400px] h-[800px] animate-fade-in">
             <div className="bg-leaf-primary p-4 rounded-t-lg flex justify-between items-center">
               <h3 className="text-white font-semibold">Loan Application</h3>
               <button
