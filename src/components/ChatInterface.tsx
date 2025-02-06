@@ -48,6 +48,7 @@ const ChatInterface = () => {
     businessPlan: false,
     financialProjections: false,
   });
+  const [inputMessage, setInputMessage] = useState("");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -208,7 +209,6 @@ const ChatInterface = () => {
     }
   };
 
-
   const handlePersonalDetailsVerification = (verified: boolean) => {
     if (verified) {
       addMessage({
@@ -260,18 +260,35 @@ const ChatInterface = () => {
     }
   };
 
+  const handleSendMessage = () => {
+    if (inputMessage.trim()) {
+      addMessage({
+        type: "user",
+        content: inputMessage,
+      });
+      setInputMessage("");
+    }
+  };
+
   const renderCurrentStep = () => {
-    const allDocsUploaded = Object.values(additionalDocs).every(val => val) && step === 5;
+    const allStepsCompleted = step === 5 && Object.values(additionalDocs).every(val => val);
     
-    if (allDocsUploaded) {
+    if (allStepsCompleted) {
       return (
         <div className="flex gap-2">
           <Input
             type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
             placeholder="Type your message..."
             className="flex-1"
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                handleSendMessage();
+              }
+            }}
           />
-          <Button>Send</Button>
+          <Button onClick={handleSendMessage}>Send</Button>
         </div>
       );
     }
@@ -399,16 +416,7 @@ const ChatInterface = () => {
           </div>
         );
       default:
-        return (
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              placeholder="Type your message..."
-              className="flex-1"
-            />
-            <Button>Send</Button>
-          </div>
-        );
+        return null;
     }
   };
 
@@ -435,7 +443,26 @@ const ChatInterface = () => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="p-4 border-t">{renderCurrentStep()}</div>
+      <div className="p-4 border-t">
+        {renderCurrentStep()}
+        {step === 5 && !Object.values(additionalDocs).every(val => val) && (
+          <div className="flex gap-2 mt-4">
+            <Input
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleSendMessage();
+                }
+              }}
+            />
+            <Button onClick={handleSendMessage}>Send</Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
