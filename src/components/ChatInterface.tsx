@@ -388,7 +388,7 @@ const ChatInterface = () => {
             <DocumentUpload
               onUpload=handleFileUpload("Tax Return")}
               label="Upload Tax Return"
-              uploaded={idUploaded.taxReturnUploaded}
+              uploaded={taxReturnUploaded}
             />
             {showBusinessDetails && (
               <div className="mt-4 p-4 border rounded-lg space-y-2">
