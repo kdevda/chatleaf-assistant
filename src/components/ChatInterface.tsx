@@ -122,6 +122,13 @@ const ChatInterface = () => {
             }, 1000);
           }, 1000);
         } else if (type === 'Tax Return') {
+          const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        // First, add the uploaded file message
+        addMessage({
+          type: "user",
+          content: `Uploaded ${type}: ${file.name}`,
+        });
           setTaxReturnUploaded(true);
           setTimeout(() => {
             setShowBusinessDetails(true);
