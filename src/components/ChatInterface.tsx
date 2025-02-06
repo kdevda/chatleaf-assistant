@@ -77,6 +77,7 @@ const ChatInterface = () => {
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
+        // First, add the uploaded file message
         addMessage({
           type: "user",
           content: `Uploaded ${type}: ${file.name}`,
@@ -87,7 +88,7 @@ const ChatInterface = () => {
           const side = type.includes('front') ? 'front' : 'back';
           setIdUploaded(prev => ({ ...prev, [side]: true }));
           
-          // Show upload confirmation message first
+          // Show upload confirmation message after file name is displayed
           setTimeout(() => {
             addMessage({
               type: "agent",
@@ -95,33 +96,31 @@ const ChatInterface = () => {
             });
             
             // Then show next instruction if needed
-            if (side === 'front' && !idUploaded.back) {
-              setTimeout(() => {
+            setTimeout(() => {
+              if (side === 'front' && !idUploaded.back) {
                 addMessage({
                   type: "agent",
                   content: "Please upload the back of your ID.",
                 });
-              }, 500);
-            } else if (side === 'back' && !idUploaded.front) {
-              setTimeout(() => {
+              } else if (side === 'back' && !idUploaded.front) {
                 addMessage({
                   type: "agent",
                   content: "Please upload the front of your ID.",
                 });
-              }, 500);
-            }
-            
-            // Show personal details only when both sides are uploaded
-            if (!showPersonalDetails && ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front))) {
-              setTimeout(() => {
-                setShowPersonalDetails(true);
-                addMessage({
-                  type: "agent",
-                  content: "We've extracted the following information from your ID. Please verify if it's correct:",
-                });
-              }, 1000);
-            }
-          }, 500);
+              }
+              
+              // Show personal details only when both sides are uploaded
+              if (!showPersonalDetails && ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front))) {
+                setTimeout(() => {
+                  setShowPersonalDetails(true);
+                  addMessage({
+                    type: "agent",
+                    content: "We've extracted the following information from your ID. Please verify if it's correct:",
+                  });
+                }, 1000);
+              }
+            }, 1000);
+          }, 1000);
         } else if (type === 'Tax Return') {
           setTaxReturnUploaded(true);
           setTimeout(() => {
@@ -141,7 +140,7 @@ const ChatInterface = () => {
           
           // Check if all documents are uploaded
           if (Object.values(updatedDocs).every(val => val) && 
-              !Object.values(additionalDocs).every(val => val)) { // Only show message if it hasn't been shown before
+              !Object.values(additionalDocs).every(val => val)) {
             setTimeout(() => {
               addMessage({
                 type: "agent",
