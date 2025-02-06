@@ -77,25 +77,21 @@ const ChatInterface = () => {
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
-        // First, add the uploaded file message
         addMessage({
           type: "user",
           content: `Uploaded ${type}: ${file.name}`,
         });
 
-        // Update the appropriate state based on the document type
         if (type.includes('ID')) {
           const side = type.includes('front') ? 'front' : 'back';
           setIdUploaded(prev => ({ ...prev, [side]: true }));
           
-          // Show upload confirmation message after file name is displayed
           setTimeout(() => {
             addMessage({
               type: "agent",
               content: `Thank you for uploading the ${side} of your ID.`,
             });
             
-            // Then show next instruction if needed
             setTimeout(() => {
               if (side === 'front' && !idUploaded.back) {
                 addMessage({
@@ -109,8 +105,7 @@ const ChatInterface = () => {
                 });
               }
               
-              // Show personal details only when both sides are uploaded
-              if (!showPersonalDetails && ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front))) {
+              if ((side === 'front' && idUploaded.back) || (side === 'back' && idUploaded.front)) {
                 setTimeout(() => {
                   setShowPersonalDetails(true);
                   addMessage({
@@ -121,35 +116,47 @@ const ChatInterface = () => {
               }
             }, 1000);
           }, 1000);
-     } else if (type === 'Tax Return') {
-    setTaxReturnUploaded(true);
-
-    // Delay the extracted information message
-    setTimeout(() => {
-        setShowBusinessDetails(true);
-        addMessage({
-            type: "agent",
-            content: "We've extracted the following information from your tax return. Please verify if it's correct:",
-        });
-    }, 1000); // Add delay similar to ID upload
-        } else {
-          // Handle additional documents
-          const updatedDocs = {
-            ...additionalDocs,
-            [type.toLowerCase().replace(/\s+/g, '')]: true
-          };
-          setAdditionalDocs(updatedDocs);
+        } else if (type === 'Tax Return') {
+          setTaxReturnUploaded(true);
           
-          // Check if all documents are uploaded
-          if (Object.values(updatedDocs).every(val => val) && 
-              !Object.values(additionalDocs).every(val => val)) {
+          setTimeout(() => {
+            addMessage({
+              type: "agent",
+              content: "Thank you for uploading your Tax Return.",
+            });
+            
             setTimeout(() => {
+              setShowBusinessDetails(true);
               addMessage({
                 type: "agent",
-                content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
+                content: "We've extracted the following information from your tax return. Please verify if it's correct:",
               });
-            }, 500);
-          }
+            }, 1000);
+          }, 1000);
+        } else {
+          const docKey = type.toLowerCase().replace(/\s+/g, '') as keyof typeof additionalDocs;
+          setAdditionalDocs(prev => ({ ...prev, [docKey]: true }));
+          
+          setTimeout(() => {
+            addMessage({
+              type: "agent",
+              content: `Thank you for uploading your ${type}.`,
+            });
+            
+            const updatedDocs = {
+              ...additionalDocs,
+              [docKey]: true
+            };
+            
+            if (Object.values(updatedDocs).every(val => val)) {
+              setTimeout(() => {
+                addMessage({
+                  type: "agent",
+                  content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
+                });
+              }, 1000);
+            }
+          }, 1000);
         }
       }
     };
@@ -382,7 +389,7 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(600px-64px)]">
+    <div className="flex flex-col h-[calc(800px-64px)]"> {/* Increased height from 600px to 800px */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
