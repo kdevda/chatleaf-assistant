@@ -257,7 +257,9 @@ const ChatInterface = () => {
   };
 
   const handleAdditionalDocUpload = (docType: keyof typeof additionalDocs) => {
+    setTimeout(() => {
     handleFileUpload(docType);
+    },1000);
     // setAdditionalDocs((prev) => ({ ...prev, [docType]: true }));
     checkAllDocsUploaded();
   };
