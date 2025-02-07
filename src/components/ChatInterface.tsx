@@ -17,8 +17,8 @@ interface PersonalDetails {
 
 interface BusinessDetails {
   businessName: string;
-  taxYear: string;
-  income: string;
+  directors: string;
+  businessAddress: string;
 }
 
 const ChatInterface = () => {
@@ -30,23 +30,24 @@ const ChatInterface = () => {
   const [loanPurposes, setLoanPurposes] = useState<string[]>([]);
   const [idUploaded, setIdUploaded] = useState({ front: false, back: false });
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
-    fullName: "John Doe",
-    idNumber: "123-45-6789",
-    dob: "01/01/1990",
-    address: "123 Main St, City, State 12345"
+    fullName: "Sample Connor",
+    idNumber: "S99988801",
+    dob: "01/12/1983",
+    address: "123 North Main Street, Apt 1, North Quincy, MA 02171-1748"
   });
   const [businessDetails, setBusinessDetails] = useState<BusinessDetails>({
-    businessName: "Sample Business LLC",
-    taxYear: "2023",
-    income: "$500,000"
+    businessName: "Field and Vine Restaurant, Inc.",
+    directors: "Sample Connor",
+    businessAddress: "9 Sanborn Ct, Somerville, MA 02143, United States"
   });
   const [showPersonalDetails, setShowPersonalDetails] = useState(false);
   const [showBusinessDetails, setShowBusinessDetails] = useState(false);
   const [taxReturnUploaded, setTaxReturnUploaded] = useState(false);
   const [additionalDocs, setAdditionalDocs] = useState({
-    bankstatements: false,
-    businessplan: false,
-    financialprojections: false,
+    incomestatements: false,
+    balancesheet: false,
+    cashflowstatement: false,
+    projectedincomestatement: false,
   });
   const [inputMessage, setInputMessage] = useState("");
 
@@ -172,7 +173,7 @@ const ChatInterface = () => {
     addMessage({ type: "user", content: `Loan amount: $${amount}` });
     addMessage({
       type: "agent",
-      content: "Great! What types of loans are you interested in? You can select multiple options.",
+      content: "Great! What types of loan are you interested in?",
     });
     setStep(1);
   };
@@ -188,7 +189,7 @@ const ChatInterface = () => {
       if (step === 1) {
         addMessage({
           type: "agent",
-          content: "What are the purposes for this loan? You can select multiple options.",
+          content: "What is the purposes for this loan?",
         });
         setStep(2);
       }
@@ -221,7 +222,7 @@ const ChatInterface = () => {
       });
       addMessage({
         type: "agent",
-        content: "Great! Now let's verify your business details. You can either upload your most recent tax return or enter the details manually.",
+        content: "Great! Now let's verify your business details. Please upload the Article or Incorporation/Organization.",
       });
       setShowPersonalDetails(false);
       setStep(4);
@@ -234,13 +235,17 @@ const ChatInterface = () => {
     setShowBusinessDetails(true);
     addMessage({
       type: "agent",
-      content: "We've extracted the following information from your tax return. Please verify if it's correct:",
+      content: "We've extracted the following information from your Article of Incorporation. Please verify if it's correct:",
     });
   };
 
   const handleBusinessDetailsVerification = (verified: boolean) => {
     if (verified) {
       setShowBusinessDetails(false);
+      addMessage({
+        type: "user",
+        content: "Business details verified",
+      });
       setStep(5);
       addMessage({
         type: "agent",
@@ -259,7 +264,7 @@ const ChatInterface = () => {
     if (Object.values(additionalDocs).every((val) => val)) {
       addMessage({
         type: "agent",
-        content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
+        content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 617-232-1551. Your Application Reference# is FIAAPP-00000806.",
       });
     }
   };
@@ -324,7 +329,7 @@ const ChatInterface = () => {
       case 1:
         return (
           <div className="space-y-2">
-            {["business", "equipment", "working-capital"].map((type) => (
+            {["term-loan", "line-of-credit", "invoice-financing", "merchant-cash-advance"].map((type) => (
               <Button
                 key={type}
                 variant={loanTypes.includes(type) ? "default" : "outline"}
@@ -339,7 +344,7 @@ const ChatInterface = () => {
       case 2:
         return (
           <div className="space-y-2">
-            {["expansion", "inventory", "equipment", "working-capital"].map((purpose) => (
+            {["marketing", "expansion", "working-capital", "consolidating-debt", "purchasing-equipment"].map((purpose) => (
               <Button
                 key={purpose}
                 variant={loanPurposes.includes(purpose) ? "default" : "outline"}
@@ -395,8 +400,8 @@ const ChatInterface = () => {
               <div className="mt-4 p-4 border rounded-lg space-y-2">
                 <h3 className="font-semibold">Business Details</h3>
                 <p>Business Name: {businessDetails.businessName}</p>
-                <p>Tax Year: {businessDetails.taxYear}</p>
-                <p>Income Information: {businessDetails.income}</p>
+                <p>Directors: {businessDetails.directors}</p>
+                <p>Business Address: {businessDetails.businessAddress}</p>
                 <div className="flex gap-2 mt-4">
                   <Button onClick={() => handleBusinessDetailsVerification(true)}>
                     Looks Good
@@ -413,19 +418,24 @@ const ChatInterface = () => {
         return (
           <div className="space-y-4">
             <DocumentUpload
-              onUpload={() => handleAdditionalDocUpload('bankstatements')}
-              label="Bank Statements"
-              uploaded={additionalDocs.bankstatements}
+              onUpload={() => handleAdditionalDocUpload('incomestatements')}
+              label="Income Statements (Last 2 Years)"
+              uploaded={additionalDocs.incomestatements}
             />
             <DocumentUpload
-              onUpload={() => handleAdditionalDocUpload('businessplan')}
-              label="Business Plan"
-              uploaded={additionalDocs.businessplan}
+              onUpload={() => handleAdditionalDocUpload('balancesheet')}
+              label="Balance Sheet (Current and Projected)"
+              uploaded={additionalDocs.balancesheet}
             />
             <DocumentUpload
-              onUpload={() => handleAdditionalDocUpload('financialprojections')}
-              label="Financial Projections"
-              uploaded={additionalDocs.financialprojections}
+              onUpload={() => handleAdditionalDocUpload('cashflowstatement')}
+              label="Cash Flow Statement (Current and Projected)"
+              uploaded={additionalDocs.cashflowstatement}
+            />
+            <DocumentUpload
+              onUpload={() => handleAdditionalDocUpload('projectedincomestatement')}
+              label="Income Statements (Projected Next 5 Years)"
+              uploaded={additionalDocs.projectedincomestatement}
             />
           </div>
         );
