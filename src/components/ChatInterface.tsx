@@ -30,10 +30,10 @@ const ChatInterface = () => {
   const [loanPurposes, setLoanPurposes] = useState<string[]>([]);
   const [idUploaded, setIdUploaded] = useState({ front: false, back: false });
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>({
-    fullName: "Sample Connor",
-    idNumber: "S99988801",
-    dob: "01/12/1983",
-    address: "123 NORTH MAIN STREET, APT 1, North Quincy, MA 02171-1748"
+    fullName: "John Doe",
+    idNumber: "123-45-6789",
+    dob: "01/01/1990",
+    address: "123 Main St, City, State 12345"
   });
   const [businessDetails, setBusinessDetails] = useState<BusinessDetails>({
     businessName: "Sample Business LLC",
@@ -44,9 +44,9 @@ const ChatInterface = () => {
   const [showBusinessDetails, setShowBusinessDetails] = useState(false);
   const [taxReturnUploaded, setTaxReturnUploaded] = useState(false);
   const [additionalDocs, setAdditionalDocs] = useState({
-    bankStatements: false,
-    businessPlan: false,
-    financialProjections: false,
+    bankstatements: false,
+    businessplan: false,
+    financialprojections: false,
   });
   const [inputMessage, setInputMessage] = useState("");
 
@@ -136,6 +136,7 @@ const ChatInterface = () => {
           }, 1000);
         } else {
           const docKey = type.toLowerCase().replace(/\s+/g, '') as keyof typeof additionalDocs;
+          console.log(docKey);
           setAdditionalDocs(prev => ({ ...prev, [docKey]: true }));
           
           setTimeout(() => {
@@ -250,7 +251,7 @@ const ChatInterface = () => {
 
   const handleAdditionalDocUpload = (docType: keyof typeof additionalDocs) => {
     handleFileUpload(docType);
-    setAdditionalDocs((prev) => ({ ...prev, [docType]: true }));
+    // setAdditionalDocs((prev) => ({ ...prev, [docType]: true }));
     checkAllDocsUploaded();
   };
 
@@ -258,7 +259,7 @@ const ChatInterface = () => {
     if (Object.values(additionalDocs).every((val) => val)) {
       addMessage({
         type: "agent",
-        content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 +1 617-232-1551. Your Application Reference# is FIAAPP-00000805.",
+        content: "Thanks for submitting your loan application! Our Loan Consultant will be in touch with you shortly. If you have any questions, please reach out at +1 (800) 123-4567.",
       });
     }
   };
@@ -412,19 +413,19 @@ const ChatInterface = () => {
         return (
           <div className="space-y-4">
             <DocumentUpload
-              onUpload={() => handleAdditionalDocUpload('bankStatements')}
+              onUpload={() => handleAdditionalDocUpload('bankstatements')}
               label="Bank Statements"
-              uploaded={additionalDocs.bankStatements}
+              uploaded={additionalDocs.bankstatements}
             />
             <DocumentUpload
-              onUpload={() => handleAdditionalDocUpload('businessPlan')}
+              onUpload={() => handleAdditionalDocUpload('businessplan')}
               label="Business Plan"
-              uploaded={additionalDocs.businessPlan}
+              uploaded={additionalDocs.businessplan}
             />
             <DocumentUpload
-              onUpload={() => handleAdditionalDocUpload('financialProjections')}
+              onUpload={() => handleAdditionalDocUpload('financialprojections')}
               label="Financial Projections"
-              uploaded={additionalDocs.financialProjections}
+              uploaded={additionalDocs.financialprojections}
             />
           </div>
         );
@@ -434,7 +435,7 @@ const ChatInterface = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)]">
+    <div className="flex flex-col h-[calc(80vh-64px)]">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
