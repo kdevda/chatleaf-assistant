@@ -329,7 +329,7 @@ const ChatInterface = () => {
       case 1:
         return (
           <div className="space-y-2">
-            {["term-loan", "line-of-credit", "invoice-financing", "merchant-cash-advance"].map((type) => (
+            {["Term Loan", "Line of Credit", "Invoice Financing", "Merchant Cash Advance"].map((type) => (
               <Button
                 key={type}
                 variant={loanTypes.includes(type) ? "default" : "outline"}
@@ -344,7 +344,7 @@ const ChatInterface = () => {
       case 2:
         return (
           <div className="space-y-2">
-            {["marketing", "expansion", "working-capital", "consolidating-debt", "purchasing-equipment"].map((purpose) => (
+            {["Marketing", "Expansion", "Working Capital", "Consolidating Debt", "Purchasing Equipment"].map((purpose) => (
               <Button
                 key={purpose}
                 variant={loanPurposes.includes(purpose) ? "default" : "outline"}
