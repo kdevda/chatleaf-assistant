@@ -75,7 +75,7 @@ const ChatInterface = () => {
   const handleFileUpload = (type: string) => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png';
+    input.accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx';
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
@@ -118,20 +118,20 @@ const ChatInterface = () => {
               }
             }, 1000);
           }, 1000);
-        } else if (type === 'Tax Return') {
+        } else if (type === 'Article of Incorporation') {
           setTaxReturnUploaded(true);
           
           setTimeout(() => {
             addMessage({
               type: "agent",
-              content: "Thank you for uploading your Tax Return.",
+              content: "Thank you for uploading your Article of Incorporation.",
             });
             
             setTimeout(() => {
               setShowBusinessDetails(true);
               addMessage({
                 type: "agent",
-                content: "We've extracted the following information from your tax return. Please verify if it's correct:",
+                content: "We've extracted the following information from your Article of Incorporation. Please verify if it's correct:",
               });
             }, 1000);
           }, 1000);
@@ -230,7 +230,7 @@ const ChatInterface = () => {
   };
 
   const handleTaxReturnUpload = () => {
-    handleFileUpload('Tax Return');
+    handleFileUpload('Article of Incorporation');
     setTaxReturnUploaded(true);
     setShowBusinessDetails(true);
     addMessage({
@@ -247,10 +247,12 @@ const ChatInterface = () => {
         content: "Business details verified",
       });
       setStep(5);
+      setTimeout(() => {
       addMessage({
         type: "agent",
         content: "Congratulations! You're pre-qualified. We just need a few more documents to evaluate your application:",
       });
+    },1000);
     }
   };
 
@@ -392,8 +394,8 @@ const ChatInterface = () => {
         return (
           <div className="space-y-4">
             <DocumentUpload
-              onUpload={() => handleFileUpload("Tax Return")}
-              label="Upload Tax Return"
+              onUpload={() => handleFileUpload("Article of Incorporation")}
+              label="Upload Article of Incorporation/Organization"
               uploaded={taxReturnUploaded}
             />
             {showBusinessDetails && (
