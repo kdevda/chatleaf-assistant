@@ -1,4 +1,3 @@
-
 import ChatBubble from "@/components/ChatBubble";
 
 const HomePage = () => {
@@ -49,12 +48,6 @@ const HomePage = () => {
             alt="LEAF Fund Hero"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/30" />
-          <div className="absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl max-w-xl text-center">
-            <h2 className="text-[#237380] text-4xl font-bold mb-4">
-              LEAF demonstrates effective alternatives to mainstream economic models
-            </h2>
-          </div>
           <div className="absolute bottom-4 right-4 text-white text-sm">
             Photo: Grand Opening Nubian Markets, Dorchester MA
           </div>
