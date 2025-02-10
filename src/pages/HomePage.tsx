@@ -1,64 +1,128 @@
+
 import ChatBubble from "@/components/ChatBubble";
 
 const HomePage = () => {
+  const handleLoanClick = () => {
+    const chatBubble = document.querySelector(".fixed.bottom-4.right-4 button");
+    if (chatBubble instanceof HTMLElement) {
+      chatBubble.click();
+    }
+  };
+
   return (
     <div className="min-h-screen">
-      <header className="bg-leaf-primary text-white">
-        <div className="container mx-auto px-4 py-6">
+      <header className="bg-[#237380] text-white">
+        <div className="container mx-auto px-4 py-4">
           <nav className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Leaf Fund</h1>
-            <div className="space-x-6">
-              <a href="#" className="hover:text-gray-200">About</a>
-              <a href="#" className="hover:text-gray-200">Solutions</a>
-              <a href="#" className="hover:text-gray-200">Contact</a>
+            <img 
+              src="/placeholder.svg" 
+              alt="LEAF Fund" 
+              className="h-16"
+            />
+            <div className="flex items-center space-x-8">
+              <div className="group relative">
+                <a href="#" className="hover:text-gray-200">WHAT WE DO</a>
+              </div>
+              <div className="group relative">
+                <a href="#" className="hover:text-gray-200">ABOUT US</a>
+              </div>
+              <div className="group relative">
+                <a href="#" className="hover:text-gray-200">OUR IMPACT</a>
+              </div>
+              <a href="#" className="hover:text-gray-200">INVEST</a>
+              <a href="#" className="hover:text-gray-200">ADVISORY SERVICES</a>
+              <button
+                onClick={handleLoanClick}
+                className="bg-white text-[#237380] px-6 py-2 rounded font-semibold hover:bg-gray-100 transition-colors"
+              >
+                REQUEST A LOAN
+              </button>
             </div>
           </nav>
         </div>
       </header>
 
       <main>
-        <section className="bg-gradient-to-b from-leaf-primary to-leaf-light text-white py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Growing Businesses with Smart Financing
+        <section className="relative h-[600px]">
+          <img
+            src="/lovable-uploads/9f5657ba-0245-479e-a907-3046137d3d73.png"
+            alt="LEAF Fund Hero"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-xl max-w-xl text-center">
+            <h2 className="text-[#237380] text-4xl font-bold mb-4">
+              LEAF demonstrates effective alternatives to mainstream economic models
             </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Get the funding you need to take your business to the next level with our flexible loan solutions.
-            </p>
-            <button
-              onClick={() => {
-                const chatBubble = document.querySelector(".fixed.bottom-4.right-4 button");
-                if (chatBubble instanceof HTMLElement) {
-                  chatBubble.click();
-                }
-              }}
-              className="bg-white text-leaf-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-            >
-              Start Application
-            </button>
+          </div>
+          <div className="absolute bottom-4 right-4 text-white text-sm">
+            Photo: Grand Opening Nubian Markets, Dorchester MA
           </div>
         </section>
 
-        <section className="py-20">
+        <section className="py-20 bg-gray-50">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <h3 className="text-2xl font-semibold mb-4">Fast Approval</h3>
-                <p className="text-gray-600">
-                  Get approved quickly with our streamlined application process.
-                </p>
+            <div className="grid grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-[#237380] text-4xl font-bold mb-6">
+                  LEAF provides financing to co-ops, underserved businesses, and organizations embracing shared ownership. <span className="italic">It's in our DNA.</span>
+                </h2>
+                <button
+                  onClick={handleLoanClick}
+                  className="bg-[#237380] text-white px-8 py-3 rounded font-semibold hover:bg-[#2d8f9f] transition-colors mt-8"
+                >
+                  APPLY FOR A LOAN
+                </button>
               </div>
               <div className="text-center">
-                <h3 className="text-2xl font-semibold mb-4">Competitive Rates</h3>
-                <p className="text-gray-600">
-                  Access affordable financing options tailored to your needs.
-                </p>
+                <div className="text-[#237380] text-8xl font-bold">$339M</div>
+                <p className="text-[#237380] text-xl mt-4">LEAF Has Leveraged Since 1982</p>
               </div>
-              <div className="text-center">
-                <h3 className="text-2xl font-semibold mb-4">Expert Support</h3>
-                <p className="text-gray-600">
-                  Our team is here to guide you through every step.
-                </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#237380] py-20 text-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold text-center mb-16">
+              Discover LEAF's 3 Strategic Areas
+            </h2>
+            <div className="grid grid-cols-3 gap-8">
+              <div className="relative group">
+                <img
+                  src="/lovable-uploads/8f0583ad-1e38-4993-a3e6-aa59edb2e417.png"
+                  alt="Healthy Food"
+                  className="w-full h-64 object-cover rounded-lg"
+                />
+                <div className="absolute bottom-4 left-4">
+                  <span className="bg-[#237380] text-white px-4 py-2 rounded">
+                    HEALTHY FOOD
+                  </span>
+                </div>
+              </div>
+              <div className="relative group">
+                <img
+                  src="/lovable-uploads/8f0583ad-1e38-4993-a3e6-aa59edb2e417.png"
+                  alt="Affordable Housing"
+                  className="w-full h-64 object-cover rounded-lg"
+                />
+                <div className="absolute bottom-4 left-4">
+                  <span className="bg-[#237380] text-white px-4 py-2 rounded">
+                    AFFORDABLE HOUSING
+                  </span>
+                </div>
+              </div>
+              <div className="relative group">
+                <img
+                  src="/lovable-uploads/8f0583ad-1e38-4993-a3e6-aa59edb2e417.png"
+                  alt="Economic Inclusion"
+                  className="w-full h-64 object-cover rounded-lg"
+                />
+                <div className="absolute bottom-4 left-4">
+                  <span className="bg-[#237380] text-white px-4 py-2 rounded">
+                    ECONOMIC INCLUSION
+                  </span>
+                </div>
               </div>
             </div>
           </div>
