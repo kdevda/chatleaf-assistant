@@ -1,3 +1,4 @@
+
 import ChatBubble from "@/components/ChatBubble";
 
 const HomePage = () => {
@@ -10,7 +11,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-[#237380] text-white">
+      <header className="bg-white">
         <div className="container mx-auto px-4 py-4">
           <nav className="flex justify-between items-center">
             <img 
@@ -20,19 +21,19 @@ const HomePage = () => {
             />
             <div className="flex items-center space-x-8">
               <div className="group relative">
-                <a href="#" className="hover:text-gray-200">WHAT WE DO</a>
+                <a href="#" className="text-[#237380] hover:text-[#2d8f9f]">WHAT WE DO</a>
               </div>
               <div className="group relative">
-                <a href="#" className="hover:text-gray-200">ABOUT US</a>
+                <a href="#" className="text-[#237380] hover:text-[#2d8f9f]">ABOUT US</a>
               </div>
               <div className="group relative">
-                <a href="#" className="hover:text-gray-200">OUR IMPACT</a>
+                <a href="#" className="text-[#237380] hover:text-[#2d8f9f]">OUR IMPACT</a>
               </div>
-              <a href="#" className="hover:text-gray-200">INVEST</a>
-              <a href="#" className="hover:text-gray-200">ADVISORY SERVICES</a>
+              <a href="#" className="text-[#237380] hover:text-[#2d8f9f]">INVEST</a>
+              <a href="#" className="text-[#237380] hover:text-[#2d8f9f]">ADVISORY SERVICES</a>
               <button
                 onClick={handleLoanClick}
-                className="bg-white text-[#237380] px-6 py-2 rounded font-semibold hover:bg-gray-100 transition-colors"
+                className="bg-[#237380] text-white px-6 py-2 rounded font-semibold hover:bg-[#2d8f9f] transition-colors"
               >
                 REQUEST A LOAN
               </button>
