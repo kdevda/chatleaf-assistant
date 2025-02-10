@@ -15,7 +15,7 @@ const HomePage = () => {
         <div className="container mx-auto px-4 py-4">
           <nav className="flex justify-between items-center">
             <img 
-              src="/placeholder.svg" 
+              src="/placeholder1.png" 
               alt="LEAF Fund" 
               className="h-16"
             />
