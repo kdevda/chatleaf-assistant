@@ -52,6 +52,7 @@ const ChatInterface = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [email, setEmail] = useState("");
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [selectedIdType, setSelectedIdType] = useState("");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -298,6 +299,16 @@ const ChatInterface = () => {
     addMessage({ type: "user", content: `Email: ${email}` });
     addMessage({
       type: "agent",
+      content: "Please select one of the acceptable forms of ID:",
+    });
+    setStep(2.7);
+  };
+
+  const handleIdTypeSelect = (type: string) => {
+    setSelectedIdType(type);
+    addMessage({ type: "user", content: `Selected ID type: ${type}` });
+    addMessage({
+      type: "agent",
       content: "Thanks! Please upload your ID for verification. We need both front and back images.",
     });
     setStep(3);
@@ -396,6 +407,21 @@ const ChatInterface = () => {
               }}
             />
             <Button onClick={handleEmailSubmit}>Submit</Button>
+          </div>
+        );
+      case 2.7:
+        return (
+          <div className="space-y-2">
+            {["Drivers License", "Passport", "State ID Card", "Enter Details Manually"].map((type) => (
+              <Button
+                key={type}
+                variant="outline"
+                onClick={() => handleIdTypeSelect(type)}
+                className="w-full"
+              >
+                {type}
+              </Button>
+            ))}
           </div>
         );
       case 3:
