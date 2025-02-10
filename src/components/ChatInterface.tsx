@@ -18,6 +18,7 @@ interface PersonalDetails {
 interface BusinessDetails {
   businessName: string;
   directors: string;
+  formationYear: string;
   businessAddress: string;
 }
 
@@ -38,6 +39,7 @@ const ChatInterface = () => {
   const [businessDetails, setBusinessDetails] = useState<BusinessDetails>({
     businessName: "Field and Vine Restaurant, Inc.",
     directors: "Sample Connor",
+    formationYear: "2017",
     businessAddress: "9 Sanborn Ct, Somerville, MA 02143, United States"
   });
   const [showPersonalDetails, setShowPersonalDetails] = useState(false);
@@ -468,6 +470,7 @@ const ChatInterface = () => {
               <div className="mt-4 p-4 border rounded-lg space-y-2">
                 <h3 className="font-semibold">Business Details</h3>
                 <p>Business Name: {businessDetails.businessName}</p>
+                <p>Incorporation Year: {businessDetails.formationYear}</p>
                 <p>Directors: {businessDetails.directors}</p>
                 <p>Business Address: {businessDetails.businessAddress}</p>
                 <div className="flex gap-2 mt-4">
