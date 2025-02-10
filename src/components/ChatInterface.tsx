@@ -50,6 +50,8 @@ const ChatInterface = () => {
     projectedincomestatement: false,
   });
   const [inputMessage, setInputMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -207,9 +209,9 @@ const ChatInterface = () => {
       if (step === 2) {
         addMessage({
           type: "agent",
-          content: "Please upload your ID for verification. We need both front and back images.",
+          content: "To get started, could you please provide your email address?",
         });
-        setStep(3);
+        setStep(2.5);
       }
     }
   };
@@ -281,6 +283,24 @@ const ChatInterface = () => {
       });
       setInputMessage("");
     }
+  };
+
+  const handleEmailSubmit = () => {
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      addMessage({
+        type: "agent",
+        content: "Please enter a valid email address.",
+      });
+      return;
+    }
+    
+    setEmailSubmitted(true);
+    addMessage({ type: "user", content: `Email: ${email}` });
+    addMessage({
+      type: "agent",
+      content: "Thanks! Please upload your ID for verification. We need both front and back images.",
+    });
+    setStep(3);
   };
 
   const renderCurrentStep = () => {
@@ -358,6 +378,24 @@ const ChatInterface = () => {
                 {purpose.charAt(0).toUpperCase() + purpose.slice(1).replace("-", " ")}
               </Button>
             ))}
+          </div>
+        );
+      case 2.5:
+        return (
+          <div className="flex gap-2">
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address"
+              className="flex-1"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleEmailSubmit();
+                }
+              }}
+            />
+            <Button onClick={handleEmailSubmit}>Submit</Button>
           </div>
         );
       case 3:
